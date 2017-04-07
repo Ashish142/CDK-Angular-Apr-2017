@@ -43,7 +43,8 @@
 
 		//View
 		angular.element(document).ready(function(){
-			angular.injector(["ng"]).invoke(function($rootScope, $compile){
+			angular.injector(["ng"]).invoke(function($compile, $rootScope){
+				console.log(arguments);
 				window.scope = $rootScope;
 				window.calculator = scope.calculator = new SalaryCalculator();
 				$compile(document.body)(scope);

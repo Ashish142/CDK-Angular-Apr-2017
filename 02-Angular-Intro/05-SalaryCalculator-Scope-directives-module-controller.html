@@ -44,9 +44,9 @@
 		//View
 		angular
 			.module("myApp", [])
-			.run(function($rootScope){
-				$rootScope.calculator = new SalaryCalculator();
-			});
+			.controller('calculatorController', function($scope){
+				$scope.calculator = new SalaryCalculator();
+			})
 	</script>
 </head>
 <body ng-app="myApp">
