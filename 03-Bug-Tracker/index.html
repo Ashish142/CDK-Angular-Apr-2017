@@ -86,6 +86,8 @@
 			};
 		});
 
+		/*
+		//bugStorage as 'factory'
 		bugTrackerApp.factory('bugStorage', function(bugOperations){
 			var storage = window.localStorage;
 			var currentBugId = 0;
@@ -108,7 +110,7 @@
 			}
 
 			function saveBug(bug){
-				storage.setItem(bug.id.toString(), angular.toJson(bug))
+				storage.setItem(bug.id.toString(), angular.toJson(bug));
 			}
 
 			function toggleBug(bug){
@@ -126,7 +128,44 @@
 				remove : removeBug
 			};
 		});
+		*/
 
+		//bugStorage as 'service'
+		bugTrackerApp.service('bugStorage', function(bugOperations, $window){
+			var storage = $window.localStorage;
+			var currentBugId = 0;
+
+			this.getAll = function getAllBugs(){
+				var result = [];
+				for(var index = 0; index < storage.length; index++){
+					var data = storage.getItem(storage.key(index));
+					var bug = angular.fromJson(data);
+					result.push(bug);
+					currentBugId = currentBugId > bug.id ? currentBugId : bug.id;
+				}
+				return result;
+			}
+
+			this.addNew = function addNewBug(bugName){
+				var newBug = bugOperations.createNew(++currentBugId, bugName);
+				saveBug(newBug);
+				return newBug;
+			}
+
+			function saveBug(bug){
+				storage.setItem(bug.id.toString(), angular.toJson(bug));
+			}
+
+			this.toggle = function toggleBug(bug){
+				bugOperations.toggle(bug);
+				saveBug(bug);
+			}
+
+			this.remove = function removeBug(bug){
+				storage.removeItem(bug.id.toString());
+			}
+			
+		});
 
 		bugTrackerApp.controller("bugsController", function($scope, bugStorage){
 			
