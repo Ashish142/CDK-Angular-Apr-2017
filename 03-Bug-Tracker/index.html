@@ -53,22 +53,32 @@
 	<script>
 		var bugTrackerApp = angular.module("bugTrackerApp", []);
 		
-		bugTrackerApp.value('bugOperations' ,  {
-			createNew : function(bugName){
-				return {
-					name : bugName,
-					isClosed : false
+		bugTrackerApp.value('defaultBugName', '[Default Bug]');
+
+		bugTrackerApp.factory('bugOperations' ,  function(defaultBugName){
+			var currentBugId = 0;
+			return {
+				createNew : function(bugName){
+					return {
+						id : ++currentBugId,
+						name : bugName || defaultBugName,
+						isClosed : false
+					}
+				},
+				toggle : function(bug){
+					bug.isClosed = !bug.isClosed
 				}
-			},
-			toggle : function(bug){
-				bug.isClosed = !bug.isClosed
-			}
+			};
 		});
 
 
 		bugTrackerApp.controller("bugsController", function($scope, bugOperations){
+			
 			$scope.bugs = [
-
+				bugOperations.createNew('Server communication failure'),
+				bugOperations.createNew('User actions not recognized'),
+				bugOperations.createNew('Data not validated properly'),
+				bugOperations.createNew('Application not responding')
 			];
 
 			$scope.newBug = '';
@@ -100,6 +110,7 @@
 	</script>
 </head>
 <body ng-app="bugTrackerApp">
+	<input type="text" ng-model="emp.name">
 	<h1>Bug Tracker</h1>
 	 <hr>
 	 <div class="content" ng-controller="bugsController">
@@ -110,9 +121,10 @@
 	 	</section>
 	 	<section class="search">
 	 		<label for="">Search :</label>
-	 		<input type="text" name="" id="">
+	 		<input type="text" ng-model="searchBug.name">
 	 		<label for="">Closed ? :</label>
-	 		<input type="checkbox" name="" id="">
+	 		<input type="checkbox" ng-model="searchBug.isClosed">
+	 		<input type="button" value="Show All" ng-click="searchBug=''">
 	 	</section>
 	 	<section class="sort">
 	 		<label for="">Order By :</label>
@@ -127,8 +139,10 @@
 	 	</section>
 	 	<section class="list">
 	 		<ol>
-	 			<li ng-repeat="bug in bugs">
-	 				<span class="bugname" ng-click="toggle(bug)" ng-class="{closed : bug.isClosed}">{{bug}}</span>
+	 			<li ng-repeat="bug in (bugs | filter:searchBug) ">
+	 				<span class="bugname" ng-click="toggle(bug)" ng-class="{closed : bug.isClosed}">{{bug.name}}</span>
+	 				<span> - </span>
+	 				<span><small><i>[{{bug.id}}]</i></small></span>
 	 				<div class="datetime">[Created At]</div>
 	 			</li>
 	 		</ol>
