@@ -65,8 +65,12 @@
 		12. Make the bugs accessible through unique urls
 	</script>
 	<script src="angular.js"></script>
+	<script src="moment.js"></script>
+	<script src="utils.js"></script>
 	<script>
-		var bugTrackerApp = angular.module("bugTrackerApp", []);
+
+
+		var bugTrackerApp = angular.module("bugTrackerApp", ["utils"]);
 		
 		bugTrackerApp.value('defaultBugName', '[Default Bug]');
 
@@ -77,7 +81,8 @@
 					return {
 						id : id,
 						name : bugName || defaultBugName,
-						isClosed : false
+						isClosed : false,
+						createdAt : new Date()
 					}
 				},
 				toggle : function(bug){
@@ -194,15 +199,7 @@
 
 		});
 
-		bugTrackerApp.value('defaultTrimLength', 30);
 
-		bugTrackerApp.filter('trimText', function(defaultTrimLength){
-			
-			return function(data, trimLength){
-				trimLength = trimLength || defaultTrimLength;
-				return data.length > trimLength ? data.substr(0,trimLength) + '...' : data;
-			}
-		});
 
 		/*bugTrackerApp.filter('closedCount', function(){
 			return function(data){
@@ -240,6 +237,8 @@
 				}, 0);
 			}
 		});
+
+		
 	</script>
 </head>
 <body ng-app="bugTrackerApp">
@@ -259,7 +258,7 @@
 	 		<input type="text" ng-model="searchBug.name">
 	 		<label for="">Closed ? :</label>
 	 		<input type="checkbox" ng-model="searchBug.isClosed">
-	 		<input type="button" value="Show All" ng-click="searchBug=''">
+	 		<input type="button" value="Show All" ng-click="searchBug={}">
 	 	</section>
 	 	<section class="sort">
 	 		<label for="">Order By :</label>
@@ -280,7 +279,8 @@
 	 				</span>
 	 				<span> - </span>
 	 				<span><small><i>[{{bug.id}}]</i></small></span>
-	 				<div class="datetime">[Created At]</div>
+	 				<!-- <div class="datetime">{{bug.createdAt | date:'dd-MMM-yy hh:mm:ss'}}</div> -->
+	 				<div class="datetime">{{ bug.createdAt | elapsed }}</div>
 	 			</li>
 	 		</ol>
 	 		<input type="button" value="Remove Closed" ng-click="removeClosed()">
