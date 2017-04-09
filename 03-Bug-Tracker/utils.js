@@ -1,4 +1,4 @@
-
+ 
 var utils = angular.module("utils", []);
 utils.value('defaultTrimLength', 30);
 
