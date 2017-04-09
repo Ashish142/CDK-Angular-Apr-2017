@@ -1,22 +1,28 @@
 {
   "bugs": [
     {
-      "id": 5,
-      "name": "Unable to add a new bug",
+      "id": 12,
+      "name": "validation error",
       "isClosed": false,
-      "createdAt": "2017-03-22T10:34:32.520Z"
+      "createdAt": "2017-04-09T09:37:19.667Z"
     },
     {
-      "id": 7,
-      "name": "User actions not recognized",
+      "id": 13,
+      "name": "Routing error",
       "isClosed": false,
-      "createdAt": "2017-04-09T08:00:08.346Z"
+      "createdAt": "2017-04-09T10:26:52.460Z"
     },
     {
-      "id": 8,
-      "name": "Application not responding",
+      "id": 14,
+      "name": "Data validation error",
       "isClosed": false,
-      "createdAt": "2017-04-09T08:00:47.671Z"
+      "createdAt": "2017-04-09T10:34:39.318Z"
+    },
+    {
+      "id": 15,
+      "name": "Thi si a new bug",
+      "isClosed": false,
+      "createdAt": "2017-04-09T10:39:44.005Z"
     }
   ],
   "employees": [
